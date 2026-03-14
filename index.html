@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profound — You are Profound</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- Google Fonts: Petrona + Geist -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SHZ2JXTHKW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-SHZ2JXTHKW');
+  </script>
+
+  <style>
+    /* ========================================
+       TOP NAV
+    ======================================== */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      background: rgba(251, 248, 244, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(16, 51, 59, 0.06);
+      transition: background 0.5s ease, border-color 0.5s ease;
+    }
+
+    .landing-container[data-active-section="3"] ~ * .top-nav,
+    body[data-dark="true"] .top-nav {
+      background: rgba(30, 30, 30, 0.85);
+    }
+
+    .top-nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .top-nav-logo img {
+      width: 28px;
+      height: 28px;
+    }
+
+    .top-nav-wordmark {
+      font-family: var(--font-petrona);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: var(--color-profound-primary);
+      transition: color 0.5s ease;
+    }
+
+    .top-nav-cta {
+      font-family: var(--font-geist);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-profound-primary);
+      background: transparent;
+      border: 1.5px solid var(--color-profound-primary);
+      border-radius: 8px;
+      padding: 8px 18px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .top-nav-cta:hover {
+      background: var(--color-profound-primary);
+      color: #fff;
+    }
+
+    /* Nav adapts when section 3 (dark) is active */
+    .top-nav.dark .top-nav-wordmark {
+      color: #ffffff;
+    }
+
+    .top-nav.dark .top-nav-cta {
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.5);
+      background: transparent;
+    }
+
+    .top-nav.dark .top-nav-cta:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    @media (max-width: 480px) {
+      .top-nav { padding: 12px 16px; }
+      .top-nav-wordmark { font-size: 16px; }
+      .top-nav-cta { font-size: 13px; padding: 7px 14px; }
+    }
+
+    /* ========================================
+       CSS VARIABLES & RESET
+    ======================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --color-profound-primary: #10333b;
+      --color-profound-orange: #ff8c00;
+      --color-profound-text-dark: #1d1d1d;
+      --color-profound-border-light: #e5e5e5;
+      --color-profound-accent: #d76945;
+      --color-profound-bg-cream: #faf9f6;
+      --color-profound-teal-dark: #0b2a31;
+      --color-profound-teal-light: #368da1;
+      --color-profound-bg-light: #fff9f2;
+      --color-profound-brown-light: #d4a476;
+      --color-profound-brown-dark: #8b5e34;
+      --color-profound-brown-medium: #a37b55;
+      --color-profound-gradient-start: #f1ebe3;
+      --color-profound-muted: #768082;
+      --font-petrona: 'Petrona', serif;
+      --font-geist: 'Geist', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ========================================
+       UTILITY
+    ======================================== */
+    .medium-italic {
+      font-weight: 500;
+      font-style: italic;
+    }
+
+    /* Scribble Highlight - Body Text (300) */
+    .scribble-highlight-300 {
+      position: relative;
+      display: inline-block;
+      isolation: isolate;
+    }
+
+    .scribble-highlight-300::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 12px;
+      background-image: url("images/scribble-underline-300.svg");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* ========================================
+       LANDING PAGE CONTAINER
+    ======================================== */
+    .landing-container {
+      width: 100%;
+      height: 100vh;
+      background-color: #fbf8f4;
+      color: var(--color-profound-primary);
+      position: relative;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    .landing-container[data-active-section="3"] {
+      background-color: #1e1e1e;
+      color: #ffffff;
+    }
+
+    /* ========================================
+       SECTIONS
+    ======================================== */
+    .landing-section-0 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 1.5rem;
+      transition: opacity 0.3s ease;
+      position: relative;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+      margin: 56px auto;
+      min-height: 70vh;
+      max-width: 520px;
+      width: 100%;
+      text-align: left;
+    }
+
+    .landing-section-1 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 1.5rem;
+      transition: opacity 0.3s ease;
+      position: relative;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+      margin: 56px auto;
+      max-width: 520px;
+      width: 100%;
+      overflow: visible;
+      text-align: left;
+    }
+
+    .landing-section-2,
+    .landing-section-3,
+    .landing-section-4 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 1.5rem;
+      transition: opacity 0.3s ease;
+      position: relative;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+      margin: 56px auto;
+      max-width: 550px;
+      width: 100%;
+    }
+
+    .landing-section-2 {
+      margin: 24px auto;
+      text-align: left;
+    }
+
+    .landing-section-3 {
+      text-align: left;
+    }
+
+    .landing-section-4 {
+      text-align: left;
+    }
+
+    /* Scroll-based visibility states */
+    .landing-section-active {
+      opacity: 1 !important;
+    }
+
+    .landing-section-dimmed {
+      opacity: 0.2 !important;
+    }
+
+    /* ========================================
+       SECTION 0: LOGO & HEADLINE
+    ======================================== */
+    .landing-compass-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 2rem;
+      color: var(--color-profound-primary);
+    }
+
+    .landing-compass-icon img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .landing-section-1-intro {
+      font-family: var(--font-petrona);
+      font-size: 42px;
+      font-weight: 500;
+      font-style: normal;
+      line-height: 100%;
+      letter-spacing: -3px;
+      color: var(--color-profound-primary);
+      margin-bottom: -5px;
+    }
+
+    .landing-headline-profound-wrapper {
+      position: relative;
+      display: block;
+      overflow: visible;
+      width: 100%;
+      text-align: center;
+    }
+
+    .landing-headline-profound {
+      font-family: var(--font-petrona);
+      font-size: clamp(64px, 8vw, 86px);
+      font-weight: 700;
+      font-style: normal;
+      line-height: 120%;
+      letter-spacing: -0.08em;
+      color: var(--color-profound-primary);
+      margin-bottom: 1.5rem;
+      position: relative;
+      white-space: nowrap;
+      overflow: visible;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* Shimmer Text Animation */
+    .shimmer-text {
+      background: linear-gradient(
+        90deg,
+        var(--color-profound-primary) 0%,
+        var(--color-profound-primary) 40%,
+        #4a7c87 50%,
+        var(--color-profound-primary) 60%,
+        var(--color-profound-primary) 100%
+      );
+      background-size: 200% 100%;
+      background-position: 100% 0;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 1.5s ease-in-out forwards;
+      padding-right: 0.1em;
+      margin-right: -0.1em;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+    }
+
+    /* Scribble Highlight - Large Title (600) */
+    .scribble-highlight-600 {
+      position: relative;
+      display: inline-block;
+      transform-style: preserve-3d;
+    }
+
+    .scribble-highlight-600::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 20px;
+      background-image: url("images/scribble-underline-600.svg");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      pointer-events: none;
+      transform: translateZ(-1px);
+    }
+
+    .shimmer-text.scribble-highlight-600::after {
+      clip-path: inset(0 100% 0 0);
+      animation: scribbleDraw 0.6s ease-out 1.5s forwards;
+    }
+
+    @keyframes scribbleDraw {
+      0% { clip-path: inset(0 100% 0 0); }
+      100% { clip-path: inset(0 0 0 0); }
+    }
+
+    /* ========================================
+       SECTION 1: INTRODUCTION
+    ======================================== */
+    .landing-section-1-body {
+      font-family: var(--font-petrona);
+      font-size: 22px;
+      font-weight: 400;
+      font-style: normal;
+      line-height: 150%;
+      letter-spacing: -0.01em;
+      color: var(--color-profound-primary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .landing-dot-grid {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 400px;
+      width: 300px;
+      height: 300px;
+      margin: 5rem auto 2rem auto;
+      padding-top: 0;
+      padding-bottom: 0;
+      overflow: hidden;
+      background-color: #fbf8f4;
+      transition: opacity 0.3s ease;
+    }
+
+    .landing-section-dimmed .landing-dot-grid {
+      opacity: 0 !important;
+    }
+
+    /* ========================================
+       SECTION 2: LINKEDIN METAPHOR
+    ======================================== */
+    .landing-section-2-body {
+      font-family: var(--font-petrona);
+      font-size: 22px;
+      font-weight: 400;
+      font-style: normal;
+      line-height: 150%;
+      letter-spacing: -0.01em;
+      color: var(--color-profound-primary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ========================================
+       SECTION 3: AI TRANSFORMATION
+    ======================================== */
+    .landing-section-3-intro {
+      font-family: var(--font-petrona);
+      font-size: 22px;
+      font-weight: 500;
+      font-style: normal;
+      line-height: 150%;
+      letter-spacing: -0.01em;
+      color: var(--color-profound-primary);
+      max-width: 100%;
+      transition: color 0.5s ease;
+    }
+
+    .landing-container[data-active-section="3"] .landing-section-3-intro,
+    .landing-container[data-active-section="3"] .landing-section-3 .scribble-highlight-300 {
+      color: #ffffff;
+    }
+
+    /* ========================================
+       SECTION 4: STORY & CTA
+    ======================================== */
+    .landing-section-4-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 2rem auto;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .landing-wave-gif {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+    }
+
+    .landing-section-4-body {
+      font-family: var(--font-petrona);
+      font-size: 22px;
+      font-weight: 400;
+      font-style: normal;
+      line-height: 150%;
+      letter-spacing: -0.01em;
+      color: var(--color-profound-primary);
+      max-width: 600px;
+      margin: 2rem auto 0;
+    }
+
+    .landing-cta-button {
+      background-color: var(--color-profound-primary);
+      color: white;
+      font-family: var(--font-geist);
+      font-size: 18px;
+      font-weight: 500;
+      font-style: normal;
+      padding: 16px 48px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      letter-spacing: 0;
+      line-height: 1.2;
+      width: 100%;
+      margin-top: 2rem;
+      display: block;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .landing-cta-button:hover {
+      background-color: #081a1e;
+      transform: translateY(-1px);
+    }
+
+    .landing-cta-button:active {
+      transform: translateY(0);
+    }
+
+    /* ========================================
+       SCROLL CHEVRON BUTTON
+    ======================================== */
+    .scroll-chevron-button {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.2) 100%);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow:
+        0 8px 32px rgba(16, 51, 59, 0.1),
+        0 2px 8px rgba(16, 51, 59, 0.05),
+        inset 0 1px 1px rgba(255, 255, 255, 0.8),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-profound-primary);
+      z-index: 200;
+      animation: chevronBounce 4.8s ease-in-out infinite;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .scroll-chevron-button.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes chevronBounce {
+      0%    { transform: translateX(-50%) translateY(0); }
+      5.88% { transform: translateX(-50%) translateY(10px); }
+      11.76%{ transform: translateX(-50%) translateY(0); }
+      17.65%{ transform: translateX(-50%) translateY(10px); }
+      23.53%{ transform: translateX(-50%) translateY(0); }
+      100%  { transform: translateX(-50%) translateY(0); }
+    }
+
+    .scroll-chevron-button:hover {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.3) 100%);
+      box-shadow:
+        0 12px 40px rgba(16, 51, 59, 0.15),
+        0 4px 12px rgba(16, 51, 59, 0.08),
+        inset 0 1px 1px rgba(255, 255, 255, 0.9),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.05);
+      animation-play-state: paused;
+    }
+
+    .scroll-chevron-button:active {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.15) 100%);
+      box-shadow:
+        0 4px 16px rgba(16, 51, 59, 0.08),
+        inset 0 1px 1px rgba(255, 255, 255, 0.6),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.1);
+    }
+
+    .scroll-chevron-button svg {
+      width: 24px;
+      height: 24px;
+      filter: drop-shadow(0 1px 2px rgba(16, 51, 59, 0.1));
+    }
+
+    /* ========================================
+       NOTIFICATION BUBBLES
+    ======================================== */
+    .notification-bubbles-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .notification-bubble {
+      position: fixed;
+      opacity: 0;
+      width: auto;
+      height: auto;
+    }
+
+    .notification-bubbles-container.show .notification-bubble {
+      animation: bubbleAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .notification-bubble-1 { animation-delay: 0s; }
+    .notification-bubble-2 { animation-delay: 0.15s; }
+    .notification-bubble-3 { animation-delay: 0.3s; }
+    .notification-bubble-4 { animation-delay: 0.45s; }
+
+    .notification-bubbles-container.show .notification-bubble-1 {
+      animation-name: bubbleAppear1;
+    }
+    @keyframes bubbleAppear1 {
+      from { opacity: 0; bottom: 0; left: 0; }
+      to   { opacity: 1; bottom: 0px; left: 10px; }
+    }
+
+    .notification-bubbles-container.show .notification-bubble-2 {
+      animation-name: bubbleAppear2;
+    }
+    @keyframes bubbleAppear2 {
+      from { opacity: 0; bottom: 0; left: 0; }
+      to   { opacity: 1; bottom: 45px; left: 95px; }
+    }
+
+    .notification-bubbles-container.show .notification-bubble-3 {
+      animation-name: bubbleAppear3;
+    }
+    @keyframes bubbleAppear3 {
+      from { opacity: 0; bottom: 0; left: 0; }
+      to   { opacity: 1; bottom: 110px; left: 30px; }
+    }
+
+    .notification-bubbles-container.show .notification-bubble-4 {
+      animation-name: bubbleAppear4;
+    }
+    @keyframes bubbleAppear4 {
+      from { opacity: 0; bottom: 0; left: 0; }
+      to   { opacity: 1; bottom: 160px; left: 140px; }
+    }
+
+    /* ========================================
+       LINKEDIN POSTS
+    ======================================== */
+    .linkedin-posts-container {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .linkedin-post {
+      position: fixed;
+      opacity: 0;
+      max-width: 280px;
+      width: 30vw;
+      height: auto;
+      transform: scale(0);
+    }
+
+    .linkedin-posts-container.show .linkedin-post {
+      animation: postPopOut 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .linkedin-posts-container.show .linkedin-post-1 {
+      animation-name: postPopOut1;
+      animation-delay: 0s;
+    }
+    @keyframes postPopOut1 {
+      from { opacity: 0; transform: scale(0); top: 5vh;  right: 1.5vw; }
+      to   { opacity: 1; transform: scale(1); top: 2vh;  right: 1.5vw; }
+    }
+
+    .linkedin-posts-container.show .linkedin-post-2 {
+      animation-name: postPopOut2;
+      animation-delay: 1s;
+    }
+    @keyframes postPopOut2 {
+      from { opacity: 0; transform: scale(0); top: 15vh; right: 1.5vw; }
+      to   { opacity: 1; transform: scale(1); top: 9vh;  right: 16vw; }
+    }
+
+    .linkedin-post-3 { border-radius: 10px; }
+
+    .linkedin-posts-container.show .linkedin-post-3 {
+      animation-name: postPopOut3;
+      animation-delay: 2s;
+    }
+    @keyframes postPopOut3 {
+      from { opacity: 0; transform: scale(0); top: 30vh; right: 1.5vw; }
+      to   { opacity: 1; transform: scale(1); top: 18vh; right: 4.5vw; }
+    }
+
+    /* ========================================
+       RESPONSIVE: TABLET (768px)
+    ======================================== */
+    @media (max-width: 768px) {
+      .landing-section-0 { padding: 3rem 1rem; max-width: 380px; }
+      .landing-section-1 { padding: 0 1rem; max-width: 380px; }
+      .landing-section-2,
+      .landing-section-3,
+      .landing-section-4 { padding: 3rem 1rem; max-width: 380px; }
+
+      .landing-section-1-body,
+      .landing-section-2-body,
+      .landing-section-3-intro,
+      .landing-section-4-body { font-size: 18px; }
+
+      .landing-dot-grid { width: 200px; height: 200px; }
+      .landing-section-4-visual { max-width: 100%; }
+
+      .notification-bubble { transform: scale(0.8); }
+
+      @keyframes bubbleAppear1 {
+        from { opacity: 0; bottom: 0; left: 0; }
+        to   { opacity: 1; bottom: 0px; left: 5px; }
+      }
+      @keyframes bubbleAppear2 {
+        from { opacity: 0; bottom: 0; left: 0; }
+        to   { opacity: 1; bottom: 30px; left: 70px; }
+      }
+      @keyframes bubbleAppear3 {
+        from { opacity: 0; bottom: 0; left: 0; }
+        to   { opacity: 1; bottom: 70px; left: 10px; }
+      }
+      @keyframes bubbleAppear4 {
+        from { opacity: 0; bottom: 0; left: 0; }
+        to   { opacity: 1; bottom: 125px; left: 95px; }
+      }
+
+      .linkedin-post { max-width: 300px; width: 55vw; }
+      .linkedin-post-1 { max-width: 300px; }
+      .linkedin-post-2 { max-width: 280px; }
+      .linkedin-post-3 { max-width: 320px; }
+
+      @keyframes postPopOut1 {
+        from { opacity: 0; transform: scale(0); top: 5vh;  right: 2vw; }
+        to   { opacity: 1; transform: scale(1); top: 2.5vh; right: 2vw; }
+      }
+      @keyframes postPopOut2 {
+        from { opacity: 0; transform: scale(0); top: 15vh; right: 2vw; }
+        to   { opacity: 1; transform: scale(1); top: 11vh; right: 20vw; }
+      }
+      @keyframes postPopOut3 {
+        from { opacity: 0; transform: scale(0); top: 28vh; right: 2vw; }
+        to   { opacity: 1; transform: scale(1); top: 22vh; right: 2vw; }
+      }
+    }
+
+    /* ========================================
+       RESPONSIVE: MOBILE (480px)
+    ======================================== */
+    @media (max-width: 480px) {
+      .landing-section-0 { padding: 2rem 1rem; max-width: 360px; }
+      .landing-section-1 { padding: 0 1.2rem; max-width: 360px; }
+      .landing-section-2,
+      .landing-section-3,
+      .landing-section-4 { padding: 2rem 1.2rem; max-width: 360px; }
+
+      .landing-section-1-body,
+      .landing-section-2-body,
+      .landing-section-3-intro,
+      .landing-section-4-body { font-size: 18px; }
+
+      .landing-compass-icon { width: 40px; height: 40px; }
+      .landing-dot-grid { width: 200px; height: 200px; }
+
+      .landing-cta-button { padding: 14px 32px; font-size: 16px; }
+
+      .notification-bubble { transform: scale(0.7); }
+
+      @keyframes bubbleAppear1 {
+        from { opacity: 0; bottom: 0; left: 0; }
+        to   { opacity: 1; bottom: 0px; left: 5px; }
+      }
+      @keyframes bubbleAppear2 {
+        from { opacity: 0; bottom: 0; left: 0; }
+        to   { opacity: 1; bottom: 25px; left: 55px; }
+      }
+      @keyframes bubbleAppear3 {
+        from { opacity: 0; bottom: 0; left: 0; }
+        to   { opacity: 1; bottom: 65px; left: 5px; }
+      }
+      @keyframes bubbleAppear4 {
+        from { opacity: 0; bottom: 0; left: 0; }
+        to   { opacity: 1; bottom: 105px; left: 80px; }
+      }
+
+      .linkedin-post { max-width: 80vw; width: 80vw; box-shadow: 0 0 10px 0 rgba(0,0,0,0.1); border-radius: 12px; }
+      .linkedin-post-1 { max-width: 250px; }
+      .linkedin-post-2 { max-width: 250px; }
+      .linkedin-post-3 { max-width: 300px; }
+
+      @keyframes postPopOut1 {
+        from { opacity: 0; transform: scale(0); top: 4vh;  right: 1.5vw; }
+        to   { opacity: 1; transform: scale(1); top: 2vh;  right: 1.5vw; }
+      }
+      @keyframes postPopOut2 {
+        from { opacity: 0; transform: scale(0); top: 12vh; right: 1.5vw; }
+        to   { opacity: 1; transform: scale(1); top: 11vh; right: 25vw; }
+      }
+      @keyframes postPopOut3 {
+        from { opacity: 0; transform: scale(0); top: 22vh; right: 1.5vw; }
+        to   { opacity: 1; transform: scale(1); top: 22vh; right: 7vw; }
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAV -->
+  <nav class="top-nav" id="top-nav">
+    <a class="top-nav-logo" href="#">
+      <img src="images/profound-logo-mark.svg" alt="Profound" />
+      <span class="top-nav-wordmark">Profound</span>
+    </a>
+    <a
+      class="top-nav-cta"
+      href="https://forms.gle/ggB4GnGoaP3CmKes5"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Join Waitlist
+    </a>
+  </nav>
+
+  <!-- LANDING CONTAINER -->
+  <div class="landing-container" id="landing-container" data-active-section="0">
+
+    <!-- Notification Bubbles (viewport-anchored, shown on section 2) -->
+    <div class="notification-bubbles-container" id="notification-bubbles">
+      <img src="images/notifaction-notif.svg"  alt="" width="112" height="89"  class="notification-bubble notification-bubble-4" />
+      <img src="images/message-notif.svg"      alt="" width="137" height="111" class="notification-bubble notification-bubble-3" />
+      <img src="images/jobs-notif.svg"          alt="" width="159" height="129" class="notification-bubble notification-bubble-2" />
+      <img src="images/network-notif-1.svg"    alt="" width="166" height="122" class="notification-bubble notification-bubble-1" />
+    </div>
+
+    <!-- LinkedIn Posts (viewport-anchored, shown on section 2) -->
+    <div class="linkedin-posts-container" id="linkedin-posts">
+      <img src="images/10-things-I-Learned.svg" alt="" width="280" height="130" class="linkedin-post linkedin-post-1" />
+      <img src="images/Sponsored-Inmail.svg"    alt="" width="208" height="90"  class="linkedin-post linkedin-post-2" />
+      <img src="images/Reactivate-Premium.svg"  alt="" width="240" height="65"  class="linkedin-post linkedin-post-3" />
+    </div>
+
+    <!-- Sections wrapper -->
+    <div>
+
+      <!-- SECTION 0: Logo & Headline -->
+      <div class="landing-section-0 landing-section-active" id="section-0" data-section="0">
+        <div class="landing-compass-icon">
+          <img src="images/profound-logo-mark.svg" alt="Profound" width="48" height="48" />
+        </div>
+        <div class="landing-section-1-intro">You are</div>
+        <div class="landing-headline-profound-wrapper">
+          <h1 class="landing-headline-profound">
+            <span class="scribble-highlight-600 medium-italic shimmer-text">Profound</span>
+          </h1>
+        </div>
+      </div>
+
+      <!-- SECTION 1: Introduction -->
+      <div class="landing-section-1 landing-section-dimmed" id="section-1" data-section="1">
+        <p class="landing-section-1-body">
+          Your depth and expertise is an asset that should
+          <span class="scribble-highlight-300">compound</span> - open doors, hire the right
+          people, and create opportunity.
+        </p>
+        <div class="landing-dot-grid" id="lottie-container"></div>
+      </div>
+
+      <!-- SECTION 2: LinkedIn Critique -->
+      <div class="landing-section-2 landing-section-dimmed" id="section-2" data-section="2">
+        <p class="landing-section-2-body">
+          But <span class="scribble-highlight-300">LinkedIn</span> wasn't built for people
+          like you. A database dressed as a network. Your depth reduced to keywords so recruiters
+          can search and salespeople can spam.
+        </p>
+      </div>
+
+      <!-- SECTION 3: AI Transformation (Dark) -->
+      <div class="landing-section-3 landing-section-dimmed" id="section-3" data-section="3">
+        <p class="landing-section-3-intro">
+          <span class="scribble-highlight-300 medium-italic">AI changes everything</span>. It
+          can listen, remember, and connect dots across your whole career. Your work speaks for
+          itself. Professional discovery finally gets the infrastructure it deserves.
+          <br /><br />
+          That's why we're building Profound.
+        </p>
+      </div>
+
+      <!-- SECTION 4: Story & CTA -->
+      <div class="landing-section-4 landing-section-dimmed" id="section-4" data-section="4">
+        <div class="landing-section-4-visual">
+          <img src="wave-structure1.gif" alt="" width="400" height="200" class="landing-wave-gif" />
+        </div>
+        <p class="landing-section-4-body">
+          Profound AI learns your story through conversation. It surfaces what makes you
+          <span class="scribble-highlight-300">distinctive</span> and helps you articulate it.
+          What you've built starts working for you - sharper hires, stronger collaborators, richer
+          opportunities. Conversations that actually move things forward.
+          <br /><br />
+          Whether you're building a team or ready for what's next, it starts with
+          <span class="scribble-highlight-300">one conversation</span>.
+        </p>
+        <a
+          href="https://forms.gle/ggB4GnGoaP3CmKes5"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="landing-cta-button"
+        >
+          Join Waitlist
+        </a>
+        <br /><br /><br />
+      </div>
+
+    </div><!-- /sections wrapper -->
+
+    <!-- Scroll Chevron (fixed bottom center) -->
+    <button class="scroll-chevron-button" id="scroll-chevron" aria-label="Scroll to next section">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+  </div><!-- /landing-container -->
+
+  <!-- Lottie Web (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+  <!-- Animation data as JS variable (avoids CORS issues on file://) -->
+  <script src="animations/compounding-animation.js"></script>
+
+  <script>
+    (function () {
+      const container    = document.getElementById('landing-container');
+      const sections     = Array.from({ length: 5 }, (_, i) => document.getElementById('section-' + i));
+      const notifBubbles = document.getElementById('notification-bubbles');
+      const linkedinPosts= document.getElementById('linkedin-posts');
+      const chevron      = document.getElementById('scroll-chevron');
+      const topNav       = document.getElementById('top-nav');
+
+      let activeSection   = 0;
+      let lottieLoaded    = false;
+      let lottieInstance  = null;
+      let lottieStarted   = false;
+
+      /* ---- Lottie lazy init ---- */
+      function initLottie() {
+        if (lottieLoaded) return;
+        lottieLoaded = true;
+        lottieInstance = lottie.loadAnimation({
+          container: document.getElementById('lottie-container'),
+          renderer: 'svg',
+          loop: true,
+          autoplay: false,
+          animationData: compoundingAnimationData
+        });
+      }
+
+      /* ---- Apply active/dimmed classes ---- */
+      function applySection(idx) {
+        activeSection = idx;
+        container.setAttribute('data-active-section', idx);
+
+        sections.forEach((sec, i) => {
+          if (!sec) return;
+          sec.classList.toggle('landing-section-active', i === idx);
+          sec.classList.toggle('landing-section-dimmed', i !== idx);
+        });
+
+        /* Chevron: hide on last section */
+        chevron.classList.toggle('hidden', idx >= 4);
+
+        /* Nav: dark mode on section 3 */
+        topNav.classList.toggle('dark', idx === 3);
+
+        /* Lottie: init + play when section 1 becomes active */
+        if (idx === 1) {
+          initLottie();
+          if (!lottieStarted) {
+            setTimeout(() => {
+              lottieStarted = true;
+              if (lottieInstance) lottieInstance.play();
+            }, 1000);
+          }
+        }
+
+        /* Notification bubbles + LinkedIn posts: show on section 2 */
+        if (idx === 2) {
+          setTimeout(() => {
+            notifBubbles.classList.add('show');
+            linkedinPosts.classList.add('show');
+          }, 300);
+        } else {
+          notifBubbles.classList.remove('show');
+          linkedinPosts.classList.remove('show');
+        }
+      }
+
+      /* ---- Intersection Observer (center-zone: -50% margins) ---- */
+      sections.forEach((sec, idx) => {
+        if (!sec) return;
+        const obs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) applySection(idx);
+            });
+          },
+          { threshold: 0, rootMargin: '-50% 0px -50% 0px' }
+        );
+        obs.observe(sec);
+      });
+
+      /* ---- Chevron click: scroll to next section ---- */
+      chevron.addEventListener('click', () => {
+        const next = sections[activeSection + 1];
+        if (next) next.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    })();
+  </script>
+
+</body>
+</html>
